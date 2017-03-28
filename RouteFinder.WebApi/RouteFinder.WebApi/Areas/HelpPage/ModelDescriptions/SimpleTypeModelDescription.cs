@@ -1,0 +1,6 @@
+namespace RouteFinder.WebApi.Areas.HelpPage.ModelDescriptions
+{
+    public class SimpleTypeModelDescription : ModelDescription
+    {
+    }
+}

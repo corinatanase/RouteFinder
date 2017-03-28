@@ -1,0 +1,21 @@
+<div class="form-inline">
+    <div class="input-group">
+        <input type="text"
+               class="form-control"
+               uib-datepicker-popup="{{format}}"
+               ng-model="shortDate"
+               placeholder="dd-mm-yyyy"
+               is-open="opened"
+               datepicker-options="dateOptions"
+               ng-required="true"
+               close-text="Close" />
+        <span class="input-group-btn">
+            <button type="button"
+                    class="btn"
+                    ng-click="open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+    </div>
+    <div uib-timepicker ng-model="time" show-meridian="true"></div>
+</div>
