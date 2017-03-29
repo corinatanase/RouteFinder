@@ -61,8 +61,11 @@
             <div class="col-md-6">
                 <br /><br />
                 <p ng-if="pickupAddress.name">X: {{pickupLatitude}} Y: {{pickupLongitude}}</p>
-                <ng-map center="[{{pickupLatitude +', '+ pickupLongitude}}]" style="height : 80vh;">
-                    <marker draggable="true" ng-if="pickupAddress.country" position="[{{pickupLatitude +', '+ pickupLongitude}}]"></marker>
+                <ng-map center="{{setCenter}}" style="height : 80vh;">
+                    <marker draggable="true" ng-if="pickupAddress.country" position="[{{pickupLatitude +', '+ pickupLongitude}}]" on-dragend="getCoord()"></marker>
+                    <info-window position="current-location">
+                        <span>Loation found using HTML5.</span>
+                    </info-window>
                 </ng-map>
             </div>
         </div>

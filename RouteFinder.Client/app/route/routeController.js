@@ -15,11 +15,13 @@
                 console.log('register');
             }
 
+            $scope.setCenter = 'current-location';
             $scope.pickupAddressChanged = function () {
                 $scope.place = this.getPlace();
                 $scope.pickupAddress = {};
                 $scope.pickupLatitude = $scope.place.geometry.location.lat();
                 $scope.pickupLongitude = $scope.place.geometry.location.lng();
+                $scope.setCenter = '[' + $scope.pickupLatitude + ', ' + $scope.pickupLongitude + ']';
 
                 $scope.place.address_components.forEach(function (element) {
                     switch (element.types[0]) {
@@ -118,7 +120,14 @@
             }
 
             // #datetimepicker end region
+            $scope.getCoord = function (e) {
+                $scope.pickupLatitude = e.latLng.lat();
+                $scope.pickupLongitude = e.latLng.lng();
+            };
+            
         }]
+
+        
     );
 
 })();
