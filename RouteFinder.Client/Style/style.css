@@ -1,14 +1,8 @@
-﻿.view-container {
-    display: table;
-    height: 100%;
-    margin: 0 auto;
+﻿.nav-tabs > li, .nav-pills > li {
+    float: none;
+    display: inline-block;
 }
 
-.login-container {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-#map-canvas {
-    overflow: auto;
+.nav-tabs, .nav-pills {
+    text-align: center;
 }
