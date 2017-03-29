@@ -59,11 +59,9 @@
             $scope.addressChanged = function () {
                 $scope.place = this.getPlace();
                 $scope.pickupAddress = {};
-                $scope.deliveryAddress = {};
                 $scope.latitude = $scope.place.geometry.location.lat();
                 $scope.longitude = $scope.place.geometry.location.lng();
 
-                if ($scope.pickupAddress)
 
                 $scope.place.address_components.forEach(function (element) {
                     switch (element.types[0]) {
@@ -85,15 +83,45 @@
                         case 'postal_code':
                             $scope.pickupAddress.zip = element.short_name;
                             break;
-                    
-                    }
-                   
-                        
 
-                })
-            }
+                    };
+                });
+            };
 
-        }]
-    );
+            $scope.address1Changed = function () {
+                $scope.place1 = this.getPlace();
+                $scope.deliveryAddress = {};
+                $scope.latitude1 = $scope.place1.geometry.location.lat();
+                $scope.longitude1 = $scope.place1.geometry.location.lng();
+
+                    $scope.place1.address_components.forEach(function (element) {
+                        switch (element.types[0]) {
+                            case 'route':
+                                $scope.deliveryAddress.name = element.short_name;
+                                break;
+                            case 'street_number':
+                                $scope.deliveryAddress.number = element.short_name;
+                                break;
+                            case 'sublocality_level_1':
+                                $scope.deliveryAddress.district = element.short_name;
+                                break;
+                            case 'locality':
+                                $scope.deliveryAddress.city = element.short_name;
+                                break;
+                            case 'country':
+                                $scope.deliveryAddress.country = element.long_name;
+                                break;
+                            case 'postal_code':
+                                $scope.deliveryAddress.zip = element.short_name;
+                                break;
+
+                        };
+                    });        
+
+             };
+
+            
+        }
+    ]);
 
 })();
