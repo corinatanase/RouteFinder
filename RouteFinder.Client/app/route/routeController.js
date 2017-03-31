@@ -123,8 +123,9 @@
             $scope.getCoord = function (e) {
                 $scope.pickupLatitude = e.latLng.lat();
                 $scope.pickupLongitude = e.latLng.lng();
+                $scope.setCenter = '[' + $scope.pickupLatitude + ', ' + $scope.pickupLongitude + ']';
             };
-            
+
         }]
 
         
