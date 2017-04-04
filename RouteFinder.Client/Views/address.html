@@ -1,7 +1,7 @@
 <section>
     <ul class="nav nav-tabs col-md-6">
         <li class="active text-center">
-            <a data-toggle="tab" href="#pickup"  >Pickup</a>
+            <a data-toggle="tab" href="#pickup">Pickup</a>
         </li>
         <li class="text-center">
             <a data-toggle="tab" href="#delivery">Delivery</a>
@@ -13,6 +13,8 @@
 
     <div class="clearfix"></div>
 
+    <!-- PICKUP ADDRESS tab -->
+
     <div class="tab-content">
         <div id="pickup" class="tab-pane fade in active">
             <div class="col-md-5 col-md-offset-1">
@@ -20,7 +22,12 @@
                 <br />
                 <div class="form-group">
                     <label>Search Address</label>
-                <input type="text" class="form-control" places-auto-complete types="['geocode']" on-place-changed="pickupAddressChanged(place)"/>
+                    {{inputAddress}}
+                    <input type="text"
+                           class="form-control"
+                           places-auto-complete types="['geocode']"
+                           on-place-changed="pickupAddressChanged(place)" 
+                           ng-model="inputAddress"/>
                 </div>
                 <div class="form-group">
                     <label>*Street</label>
@@ -62,15 +69,18 @@
             <div class="col-md-6">
                 <br /><br />
                 <p ng-if="pickupAddress.name">X: {{pickupLatitude}} Y: {{pickupLongitude}}</p>
-                <ng-map center="{{setCenter}}" style="height : 80vh;" >
-                    <marker draggable="true" ng-if="pickupAddress.country" position="{{setCenter}}" on-dragend="getCoord()" animation="DROP"></marker>
+                <ng-map center="{{setCenter}}" style="height : 80vh;" on-click="placeMarker()">
+                    <marker draggable="true" ng-if="pickupAddress.country" position="[{{pickupLatitude +', '+ pickupLongitude}}]" on-dragend="getCoord()"></marker>
                     <info-window position="current-location">
-                        <span>Loation found using HTML5.</span>
+                        <span>Location found using HTML5.</span>
                     </info-window>
                 </ng-map>
             </div>
         </div>
-        <div id="delivery" class="tab-pane fade">
+
+        <!--Delivery Address tab-->
+
+        <div id="delivery" class="tab-pane fade" ng-click="renderMap()">
             <div class="col-md-5 col-md-offset-1">
                 <h1>Set delivery point</h1>
                 <br />
@@ -115,10 +125,10 @@
                     <input type="text" class="form-control" ng-model="deliveryAddress.zip" ng-disabled="!deliveryAddress.country">
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" ng-if="isMapVisible">
                 <br /><br />
                 <p ng-if="deliveryAddress.name">X: {{deliveryLatitude}} Y: {{deliveryLongitude}}</p>
-                <ng-map center="[{{deliveryLatitude +', '+ deliveryLongitude}}]" style="height : 80vh;" >
+                <ng-map center="[{{deliveryLatitude +', '+ deliveryLongitude}}]" style="height : 80vh;">
                     <marker draggable="true" ng-if="deliveryAddress.country" position="[{{deliveryLatitude +', '+ deliveryLongitude}}]"></marker>
                 </ng-map>
             </div>

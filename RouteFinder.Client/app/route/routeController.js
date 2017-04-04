@@ -2,22 +2,42 @@
     "use strict";
     var app = angular.module("RouteFinder");
 
-    app.controller("RouteController", ["$scope", "$http", "$log",
-        function RouteController($scope, $http, $log) {
+    app.controller("RouteController", ["$scope", "$http", "$log", "$timeout",
+        function RouteController($scope, $http, $log, $timeout) {
 
             $scope.currentView = 'Views/login.html';
 
+
+            //definesc functia de login care se apeleaza on click pe Login button
             $scope.login = function () {
                 $scope.currentView = 'Views/address.html';
             }
 
+            //definesc functia de register care se apeleaza on click pe Register button
             $scope.register = function () {
                 console.log('register');
             }
 
+            //definesc functia care 
+            $scope.renderMap = function () {
+                $timeout(function () {
+                    $scope.isMapVisible = true;
+                })
+            }
+
             $scope.setCenter = 'current-location';
-            $scope.pickupAddressChanged = function () {
-                $scope.place = this.getPlace();
+
+            $scope.pickupAddressChanged = function (geocodePlace) {
+                $scope.place = {};
+               // this.getPlace && ($scope.place = this.getPlace()) || ($scope.place = geocodePlace);
+                
+                //debugger;
+                if (geocodePlace == null) {
+                    $scope.place = this.getPlace();    
+                }
+                else $scope.place = geocodePlace;
+
+                $scope.inputAddress = $scope.place.formatted_address;
                 $scope.pickupAddress = {};
                 $scope.pickupLatitude = $scope.place.geometry.location.lat();
                 $scope.pickupLongitude = $scope.place.geometry.location.lng();
@@ -48,7 +68,7 @@
             } //autocomplete callback addressChanged
 
             $scope.deliveryAddressChanged = function () {
-                //debugger;
+
                 $scope.deliveryAddress = {};
                 $scope.place = this.getPlace();
 
@@ -116,19 +136,29 @@
                 }).forEach(function (date) {
                     date.selectable = false;
                 })
-
             }
 
             // #datetimepicker end region
-            $scope.getCoord = function (e) {
-                $scope.pickupLatitude = e.latLng.lat();
-                $scope.pickupLongitude = e.latLng.lng();
+            $scope.getCoord = function (coord) {
+                $scope.pickupLatitude = coord.latLng.lat();
+                $scope.pickupLongitude = coord.latLng.lng();
                 $scope.setCenter = '[' + $scope.pickupLatitude + ', ' + $scope.pickupLongitude + ']';
+
+                var geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng($scope.pickupLatitude, $scope.pickupLongitude);
+                geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                            $scope.pickupAddressChanged(results[0]);
+                            //debugger;
+                        }
+                    }
+                });
             };
 
         }]
 
-        
+
     );
 
 })();
