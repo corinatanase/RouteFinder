@@ -31,9 +31,9 @@
                 $scope.place = {};
                // this.getPlace && ($scope.place = this.getPlace()) || ($scope.place = geocodePlace);
                 
-                //debugger;
+                
                 if (geocodePlace == null) {
-                    $scope.place = this.getPlace();    
+                    $scope.place = this.getPlace();
                 }
                 else $scope.place = geocodePlace;
 
