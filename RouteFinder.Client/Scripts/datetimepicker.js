@@ -573,6 +573,8 @@
           'The dropdownSelector configuration option is being removed because it will not function properly.')
         delete configuration.dropdownSelector
       }
+
+
     }
   }
 }))

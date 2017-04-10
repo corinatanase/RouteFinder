@@ -26,12 +26,15 @@
                     <input type="text"
                            class="form-control"
                            places-auto-complete types="['geocode']"
-                           on-place-changed="pickupAddressChanged()" />
+                           ng-model = "inputAddress"
+                           on-place-changed="pickupAddressChanged()" 
+                           />
+                           
                 </div>
                 <div class="form-group">
                     <label>*Street</label>
                     <input type="text" class="form-control" ng-model="pickupAddress.name" ng-disabled="!pickupAddress.country">
-                    {{pickupAddress}}
+
                 </div>
                 <div class="form-group">
                     <label>*Number</label>
@@ -126,17 +129,33 @@
                 </div>
             </div>
             <div class="col-md-6" ng-if="isMapVisible">
-                <br /><br />
-                <p ng-if="deliveryAddress.name">X: {{deliveryLatitude}} Y: {{deliveryLongitude}}</p>
-                <ng-map center="[{{deliveryLatitude +', '+ deliveryLongitude}}]" style="height : 80vh;">
-                    <marker draggable="true" ng-if="deliveryAddress.country" position="[{{deliveryLatitude +', '+ deliveryLongitude}}]"></marker>
-                </ng-map>
-            </div>
+                    <br /><br />
+                    <p ng-if="deliveryAddress.name"> X: {{deliveryLatitude}} Y: {{deliveryLongitude}}</p>
+                    <ng-map center="{{setCenter1}}" style="height : 80vh;" on-click="placeMarker()">
+                        <marker draggable="true" ng-if="deliveryAddress.country" position="[{{deliveryLatitude +', '+ deliveryLongitude}}]" on-dragend="getCoord1()"></marker>
+                        <info-window position="current-location">
+                            <span>Location found using HTML5.</span>
+                        </info-window>
+                    </ng-map>
+                </div>
         </div>
 
-        <div id="timing" class="tab-pane fade">
+        <br />
+        <br />
+        <div id="timing" class="tab-pane fade" ng-click="renderMap1()">
             <div class="row col-md-6 col-md-offset-3">
                 <div ng-include="'Templates/datepicker.html'">
+                </div>
+
+                <div ng-if="isMapVisible1">
+                    {{pickupAddress.dateRangeStart}}
+                    {{res}}
+                    <h3>Your route</h3>
+                    <ng-map zoom = "1" center="current-location"
+                            zoom-to-include-markers="auto">
+                        <marker animation="BOUNCE" position="[{{pickupLatitude +', '+ pickupLongitude}}]"></marker>
+                        <marker animation="BOUNCE" position="[{{deliveryLatitude +', '+ deliveryLongitude}}]"></marker>
+                    </ng-map>
                 </div>
             </div>
         </div>

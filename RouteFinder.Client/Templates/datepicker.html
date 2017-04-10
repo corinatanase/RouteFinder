@@ -9,11 +9,13 @@
     </a>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <datetimepicker ng-model="pickupAddress.dateRangeStart"
-                        data-datetimepicker-config="{ dropdownSelector: '#dropdownStart', renderOn: 'end-date-changed' }"
+                        data-datetimepicker-config="{ dropdownSelector: '#dropdownStart', renderOn: 'end-date-changed', minView: 'hour'}"
                         data-on-set-time="startDateOnSetTime()"
-                        data-before-render="startDateBeforeRender($dates)">
+                        data-before-render="startDateBeforeRender($dates)"
+                        >
         </datetimepicker>
     </ul>
+
 </div>
 
 <div ng-show="showDeliveryDatepick" class="dropdown form-group">
@@ -25,9 +27,10 @@
             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
         </div>
     </a>
+
     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <datetimepicker ng-model="deliveryAddress.dateRangeEnd"
-                        data-datetimepicker-config="{ dropdownSelector: '#dropdownEnd', renderOn: 'start-date-changed' }"
+                        data-datetimepicker-config="{ dropdownSelector: '#dropdownEnd', renderOn: 'start-date-changed',minView: 'hour' }"
                         data-on-set-time="endDateOnSetTime()"
                         data-before-render="endDateBeforeRender($view, $dates, $leftDate, $upDate, $rightDate)">
         </datetimepicker>

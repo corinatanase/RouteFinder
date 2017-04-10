@@ -18,10 +18,15 @@
                 console.log('register');
             }
 
-            //definesc functia care 
             $scope.renderMap = function () {
                 $timeout(function () {
                     $scope.isMapVisible = true;
+                })
+            }
+
+            $scope.renderMap1 = function () {
+                $timeout(function () {
+                    $scope.isMapVisible1 = true;
                 })
             }
 
@@ -29,13 +34,14 @@
 
             $scope.pickupAddressChanged = function (geocodePlace) {
                 $scope.place = {};
-               // this.getPlace && ($scope.place = this.getPlace()) || ($scope.place = geocodePlace);
-                
-                
+                // this.getPlace && ($scope.place = this.getPlace()) || ($scope.place = geocodePlace);
+
+
                 if (geocodePlace == null) {
                     $scope.place = this.getPlace();
                 }
-                else $scope.place = geocodePlace;
+                else
+                    $scope.place = geocodePlace;
 
                 $scope.inputAddress = $scope.place.formatted_address;
                 $scope.pickupAddress = {};
@@ -67,13 +73,26 @@
                 }); //foreach
             } //autocomplete callback addressChanged
 
-            $scope.deliveryAddressChanged = function () {
+            /************************** Delivery Address Changed **********************************/
 
+            $scope.setCenter1 = 'current-location';
+
+            $scope.deliveryAddressChanged = function (geocodePlace) {
+                $scope.place = {};
+                // this.getPlace && ($scope.place = this.getPlace()) || ($scope.place = geocodePlace);
+
+
+                if (geocodePlace == null) {
+                    $scope.place = this.getPlace();
+                }
+                else
+                    $scope.place = geocodePlace;
+
+                $scope.inputAddress1 = $scope.place.formatted_address;
                 $scope.deliveryAddress = {};
-                $scope.place = this.getPlace();
-
                 $scope.deliveryLatitude = $scope.place.geometry.location.lat();
                 $scope.deliveryLongitude = $scope.place.geometry.location.lng();
+                $scope.setCenter1 = '[' + $scope.deliveryLatitude + ', ' + $scope.deliveryLongitude + ']';
 
                 $scope.place.address_components.forEach(function (element) {
                     switch (element.types[0]) {
@@ -97,7 +116,11 @@
                             break;
                     }; //switch
                 }); //foreach
-            } //delivery address changed
+            } //autocomplete callback addressChanged
+
+
+            /*******************************Datetime picker *************************************/
+
 
             // #datetimepicker start region
             $scope.endDateBeforeRender = endDateBeforeRender
@@ -115,7 +138,8 @@
             }
 
             function startDateBeforeRender($dates) {
-                var activeDate = moment().subtract(1, 'day').add(1, 'minute');
+                var activeDate = moment();
+                //.subtract(1, 'day').add(1, 'minute');
 
                 $dates.filter(function (date) {
                     return date.localDateValue() <= activeDate.valueOf()
@@ -129,6 +153,7 @@
                     $scope.pickupAddress = {};
                     $scope.pickupAddress.dateRangeStart = moment();
                 }
+
                 var activeDate = moment($scope.pickupAddress.dateRangeStart).subtract(1, $view).add(1, 'minute');
 
                 $dates.filter(function (date) {
@@ -156,9 +181,25 @@
                 });
             };
 
-        }]
+            $scope.getCoord1 = function (coord) {
+                $scope.deliveryLatitude = coord.latLng.lat();
+                $scope.deliveryLongitude = coord.latLng.lng();
+                $scope.setCenter1 = '[' + $scope.deliveryLatitude + ', ' + $scope.deliveryLongitude + ']';
+
+                var geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng($scope.deliveryLatitude, $scope.deliveryLongitude);
+                geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                            $scope.deliveryAddressChanged(results[0]);
+                            //debugger;
+                        }
+                    }
+                });
+            };
 
 
-    );
+
+        }]);
 
 })();
